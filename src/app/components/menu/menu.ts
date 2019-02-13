@@ -1,4 +1,16 @@
-import {NgModule,Component,ElementRef,OnDestroy,Input,Renderer2,ViewChild,Inject,forwardRef} from '@angular/core';
+import {
+    NgModule,
+    Component,
+    ElementRef,
+    OnDestroy,
+    Input,
+    Renderer2,
+    ViewChild,
+    Inject,
+    forwardRef,
+    EventEmitter,
+    Output
+} from '@angular/core';
 import {trigger,state,style,transition,animate,AnimationEvent} from '@angular/animations';
 import {CommonModule} from '@angular/common';
 import {DomHandler} from '../dom/domhandler';
@@ -24,7 +36,7 @@ import {RouterModule} from '@angular/router';
 export class MenuItemContent {
 
     @Input("pMenuItemContent") item: MenuItem;
-    
+
     constructor(@Inject(forwardRef(() => Menu)) public menu: Menu) {}
 }
 
@@ -74,31 +86,35 @@ export class Menu implements OnDestroy {
     @Input() style: any;
 
     @Input() styleClass: string;
-    
+
     @Input() appendTo: any;
 
     @Input() autoZIndex: boolean = true;
-    
+
     @Input() baseZIndex: number = 0;
-    
+
     @Input() showTransitionOptions: string = '225ms ease-out';
 
     @Input() hideTransitionOptions: string = '195ms ease-in';
 
+
+
     @ViewChild('container') containerViewChild: ElementRef;
-    
+
     container: HTMLDivElement;
-    
+
     documentClickListener: any;
 
     documentResizeListener: any;
-    
+
     preventDocumentDefault: boolean;
 
     target: any;
 
     visible: boolean;
-    
+
+    @Output() visibleChanged: EventEmitter<boolean> = new EventEmitter();
+
     constructor(public el: ElementRef, public renderer: Renderer2) {}
 
     toggle(event) {
@@ -114,6 +130,8 @@ export class Menu implements OnDestroy {
         this.target = event.currentTarget;
         this.visible = true;
         this.preventDocumentDefault = true;
+        this.visibleChanged.emit(this.visible);
+        // test
     }
 
     onOverlayAnimationStart(event: AnimationEvent) {
@@ -149,38 +167,39 @@ export class Menu implements OnDestroy {
             this.el.nativeElement.appendChild(this.container);
         }
     }
-    
+
     moveOnTop() {
         if (this.autoZIndex) {
             this.container.style.zIndex = String(this.baseZIndex + (++DomHandler.zindex));
         }
     }
-    
+
     hide() {
         this.visible = false;
+        this.visibleChanged.emit(this.visible);
     }
 
     onWindowResize() {
         this.hide();
     }
-    
+
     itemClick(event, item: MenuItem) {
         if (item.disabled) {
             event.preventDefault();
             return;
         }
-        
+
         if (!item.url) {
             event.preventDefault();
         }
-        
+
         if (item.command) {
             item.command({
                 originalEvent: event,
                 item: item
             });
         }
-        
+
         if (this.popup) {
             this.hide();
         }
@@ -209,7 +228,7 @@ export class Menu implements OnDestroy {
         this.documentResizeListener = this.onWindowResize.bind(this);
         window.addEventListener('resize', this.documentResizeListener);
     }
-    
+
     unbindDocumentResizeListener() {
         if (this.documentResizeListener) {
             window.removeEventListener('resize', this.documentResizeListener);
@@ -223,14 +242,14 @@ export class Menu implements OnDestroy {
         this.preventDocumentDefault = false;
         this.target = null;
     }
-    
+
     ngOnDestroy() {
         if (this.popup) {
             this.restoreOverlayAppend();
             this.onOverlayHide();
         }
     }
-    
+
     hasSubMenu(): boolean {
         if (this.model) {
             for (var item of this.model) {

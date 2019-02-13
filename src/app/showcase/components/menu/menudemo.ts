@@ -5,7 +5,7 @@ import {MenuItem} from '../../../components/common/api';
     templateUrl: './menudemo.html'
 })
 export class MenuDemo {
-    
+
     items: MenuItem[];
 
     ngOnInit() {
@@ -23,5 +23,10 @@ export class MenuDemo {
                 {label: 'Remove User', icon: 'pi pi-fw pi-user-minus'}
             ]
         }];
+    }
+
+    blabla(event){
+        console.log(event);
+        alert(event);
     }
 }
