@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./components",
+    "outDir": "./dist/components",
     "baseUrl": "src",
     "rootDir": "src/app/components",
     "sourceMap": true,
