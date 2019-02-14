@@ -4,6 +4,27 @@
 [![npm version](https://badge.fury.io/js/primeng.svg)](https://badge.fury.io/js/primeng)
 [![Build Status](https://travis-ci.org/primefaces/primeng.svg?branch=master)](https://travis-ci.org/primefaces/primeng)
 
+#### PrimeNG Blubito
+
+This is fork og primeng with fixes added features.
+It can be used parallel with primeng.
+
+To build use:
+```
+npm run distribute
+```
+
+To publish use:
+```
+npm publish ./dist
+```
+
+you should have npm user and permission
+```
+npm whoami, npm login
+```
+
+
 # PrimeNG
 
 UI Components for Angular
