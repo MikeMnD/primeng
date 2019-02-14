@@ -13,7 +13,7 @@
     "build-assets": "gulp build-assets",
     "build-exports": "gulp build-exports",
     "build-styles": "node-sass src/assets/components -o src/assets/components",
-    "build-redistribute": "npm run build-components && npm run build-assets && npm run build-styles && npm run build-exports"
+    "distribute": "npm run build-components && npm run build-assets && npm run build-styles && npm run build-exports"
   },
   "repository": {
     "type": "git",
